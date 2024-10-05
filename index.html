@@ -58,6 +58,32 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .feedback-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .feedback-section input, 
+        .feedback-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .feedback-section button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .feedback-section button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +130,17 @@
         </table>
     </div>
 
+    <div class="feedback-section">
+        <h2>Feedback Submission</h2>
+        <form id="feedbackForm">
+            <form action="https://formsubmit.co/albertphu3@gmail.com" method="POST">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <textarea id="feedback" name="feedback" rows="4" placeholder="Your Feedback" required></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
     <script>
         const statusCell = document.getElementById('statusCell');
         const responseTimeCell = document.getElementById('responseTimeCell');
@@ -148,6 +185,24 @@
         setInterval(checkServerStatus, 5000);
         // Initial check
         checkServerStatus();
+
+        // Handle form submission
+        const feedbackForm = document.getElementById('feedbackForm');
+        feedbackForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page refresh
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                feedback: document.getElementById('feedback').value
+            };
+
+            console.log('Feedback submitted:', formData);
+            alert('Thank you for your feedback!');
+
+            // Clear the form
+            feedbackForm.reset();
+        });
     </script>
 
 </body>
