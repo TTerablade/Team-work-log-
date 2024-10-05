@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Status Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+        }
+        .status .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .online {
+            color: green;
+        }
+        .offline {
+            color: red;
+        }
+        .build-status {
+            font-style: italic;
+        }
+        .log-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Server Status Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Website</th>
+                <th>Status</th>
+                <th>Response Time (ms)</th>
+                <th>Build Status</th>
+            </tr>
+        </thead>
+        <tbody id="statusTable">
+            <tr>
+                <td>https://wikifoods.ddns.net/</td>
+                <td class="status" id="statusCell">Checking...</td>
+                <td id="responseTimeCell">N/A</td>
+                <td id="buildStatusCell" class="build-status">N/A</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="log-section">
+        <h2>Team Work Log</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Person</th>
+                    <th>Job</th>
+                    <th>Completed</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody id="logEntries">
+                <tr>
+                    <td>Albert Phu</td>
+                    <td>Website Designer</td>
+                    <td>true</td>
+                    <td>Build and create a website</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const statusCell = document.getElementById('statusCell');
+        const responseTimeCell = document.getElementById('responseTimeCell');
+        const buildStatusCell = document.getElementById('buildStatusCell');
+        const urlToCheck = 'https://wikifoods.ddns.net/'; // Your actual URL to check
+
+        function updateStatusIcon(isOnline) {
+            const icon = isOnline 
+                ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4KICAgIDxjaGFydCBmaWxsPSJncmVlbiIgY2lyY2xlLXJwZT0iMC44MyIgcj0iNTQiLz4KPC9zdmc+Cg==' // green circle
+                : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vbm9kZcLkLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj4KICAgIDxjaGFydCBmaWxsPSJyZWQiIGNpcnBsZS1pZD0iY3VydGllLTMwMyIgY2lyY2xlLXJwZT0iMC44MyIgcj0iNTQiLz4KPC9zdmc+Cg=='; // red circle
+
+            statusCell.innerHTML = `<img class="icon" src="${icon}" alt="Status Icon">` + (isOnline ? 'Server is Online' : 'Server is Offline');
+            statusCell.className = isOnline ? 'status online' : 'status offline';
+        }
+
+        function checkServerStatus() {
+            const startTime = performance.now();
+            fetch(urlToCheck, { method: 'HEAD' })
+                .then(response => {
+                    const endTime = performance.now();
+                    const responseTime = Math.round(endTime - startTime);
+                    responseTimeCell.textContent = responseTime + ' ms';
+
+                    console.log('Response status:', response.status); // Log the response status
+
+                    if (response.ok) {
+                        updateStatusIcon(true);
+                        buildStatusCell.textContent = 'Build Successful'; // Update build status accordingly
+                    } else {
+                        throw new Error('Server is Offline');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error); // Log the error for debugging
+                    updateStatusIcon(false);
+                    responseTimeCell.textContent = 'N/A';
+                    buildStatusCell.textContent = 'Build Failed';
+                });
+        }
+
+        // Check server status every 5 seconds
+        setInterval(checkServerStatus, 5000);
+        // Initial check
+        checkServerStatus();
+    </script>
+
+</body>
+</html>
