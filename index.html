@@ -151,7 +151,7 @@
                 ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4KICAgIDxjaGFydCBmaWxsPSJncmVlbiIgY2lyY2xlLXJwZT0iMC44MyIgcj0iNTQiLz4KPC9zdmc+Cg==' // green circle
                 : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vbm9kZcLkLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj4KICAgIDxjaGFydCBmaWxsPSJyZWQiIGNpcnBsZS1pZD0iY3VydGllLTMwMyIgY2lyY2xlLXJwZT0iMC44MyIgcj0iNTQiLz4KPC9zdmc+Cg=='; // red circle
 
-            statusCell.innerHTML = `<img class="icon" src="${icon}" alt="Status Icon">` + (isOnline ? 'Server is Online' : 'Server is Offline');
+            statusCell.innerHTML = `<img class="icon" src="${icon}" alt="Status Icon">` + (isOnline ? 'Server is Online' : 'Cannot Reach Server or Server is Offline');
             statusCell.className = isOnline ? 'status online' : 'status offline';
         }
 
